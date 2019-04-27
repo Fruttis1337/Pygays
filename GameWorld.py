@@ -1,5 +1,5 @@
 class World:
-    def __init__(self, platforms=[], coins=[], enemies=[], boss=None):
+    def __init__(self, platforms=[], coins=[], enemies=[], boss=[]):
         self.platforms = platforms
         self.coins = coins
         self.enemies = enemies
@@ -25,21 +25,20 @@ class World:
         filter(lambda x: x.get_state(), self.enemies)
 
     def check_boss(self, coords):
-        if self.boss is not None:
-            if coords == self.boss.get_coords:
+        for i in self.boss:
+            if coords == i.get_coords:
                 pass #наносится урон игроку
-        if not self.boss.get_state():
-            self.boss = None
-
+            if not i.get_state():
+                self.boss = []
 
     def get_platforms(self):
-        return [i.get_coords() for i in self.platforms]
+        return self.platforms
 
     def get_coins(self):
-        return [i.get_coords() for i in self.coins]
+        return self.coins
 
     def get_enemies(self):
-        return [i.get_coords() for i in self.enemies]
+        return self.enemies
 
     def get_boss(self):
-        return self.boss.get_coords()
+        return self.boss
