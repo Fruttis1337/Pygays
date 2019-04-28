@@ -4,8 +4,8 @@ import pygame as pg
 class Enemy:
     def __init__(self, x, y):
         self.alive = True
-        self.startx = x
-        self.starty = y
+        self.x = x
+        self.y = y
 
     def get_coords(self):
         return self.x, self.y
@@ -19,7 +19,7 @@ class Enemy:
 
 
 class FSO(Enemy):
-    def __init__(self):
+    def __init__(self, x, y):
         self.angry = 3
         super().__init__(x, y)
 
@@ -47,7 +47,7 @@ class FSO(Enemy):
 
 
 class Boss(Enemy):
-    def __init__(self):
+    def __init__(self, x, y):
         self.health = 10
         super.__init__(x, y)
 

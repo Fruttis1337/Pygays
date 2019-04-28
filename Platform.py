@@ -23,3 +23,7 @@ class Platform:
         self.time -= 1
         if not self.time:
             self.is_broken = True
+
+    def __call__(self, *args, **kwargs):
+        import pygame as pg
+        pg.draw.rect(args[0], pg.Color('Brown'), (self.x * 20, self.y * 20, 20, 20))

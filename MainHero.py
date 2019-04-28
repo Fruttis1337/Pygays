@@ -1,4 +1,4 @@
-import pygame
+import pygame #TODO: изменить под World полностью!!!
 from pygame import *
 
 GRAVITY = 0.35

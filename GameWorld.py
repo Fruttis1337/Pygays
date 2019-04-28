@@ -1,10 +1,12 @@
 class World:
-    def __init__(self, platforms=[], coins=[], enemies=[], boss=[]):
+    def __init__(self, mainhero = [], platforms=[], coins=[], enemies=[], boss=[]):
+        self.mainhero = mainhero
         self.platforms = platforms
         self.coins = coins
         self.enemies = enemies
         self.boss = boss
 
+    def check_mainhero(self):
     def check_platform(self, coords):
         for i in self.platforms:
             if i.get_coords == coords:
@@ -16,6 +18,7 @@ class World:
     def check_coins(self, coords):
         for i in self.coins:
             i.take(coords)
+            #mainhero.coins += 1
         filter(lambda x: not x.is_taken, self.platforms)
 
     def check_enemies(self, coords):

@@ -13,3 +13,7 @@ class Coin:
 
     def get_state(self):
         return self.is_taken
+
+    def __call__(self, *args, **kwargs):
+        import pygame as pg
+        pg.draw.rect(args[0], pg.Color('Yellow'), (self.x * 20, self.y * 20, 20, 20))
