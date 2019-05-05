@@ -1,12 +1,11 @@
 import pygame  # TODO: изменить под World полностью!!!
 from pygame import *
 
-GRAVITY = 0.35
 STEP_SPEED = 1
 MOVE_SPEED = 4
 MOVE_EXTRA_SPEED = 3  # ускорение
-WIDTH = 22
-HEIGHT = 32
+WIDTH = 50
+HEIGHT = 80
 COLOR = "#888888"
 JUMP_POWER = 8
 JUMP_EXTRA_POWER = 2  # дополнительная сила прыжка
