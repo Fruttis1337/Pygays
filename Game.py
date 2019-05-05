@@ -17,26 +17,17 @@ def main():
     pygame.display.set_capture = 'Game'
     bg_image = pygame.image.load('background.jpg')
     game = True
-    level = open('level.txt')
+    playerSave = tuple(open('save.txt').readline().split())  # файл сохранения игры
+    lastlvl = playerSave[0]  # Последний пройденный уровень
+    playerMoney = playerSave[1]  # Сохраненное кол-во денег
+    level = open('level1.txt')
     bx, by = list(map(int, level.readline().split()))
     plats = []
     cns = []
     enm = []
     bs = []
-    state = 1  # 1 - меню, 2 - игра, 3 - смерть, 4 - уровни, 5 - титры, 6 - пауза
-    phr = level.readline().split()  # считываем уровень
-    for i in range(0, len(phr), 3):
-        plats.append(Platform(int(phr[i]), int(phr[i + 1]), bool(phr[i + 2])))
-    phr = level.readline().split()
-    for i in range(0, len(phr), 2):
-        cns.append(Coin(int(phr[i]), int(phr[i + 1])))
-    phr = level.readline().split()
-    for i in range(0, len(phr), 2):
-        enm.append(Enemy(int(phr[i]), int(phr[i + 1])))
-    phr = level.readline().split()
-    for i in range(0, len(phr), 2):
-        bs.append((int(phr[i]), int(phr[i + 1])))
-    world = World([(0, 0)], plats, cns, enm, bs)  # конец считывания уровня
+    state = 1  # 1 - меню, 2 - игра, 3 - смерть, 4 - уровни, 5 - титры, 6 - пауза, 7 - уровень пройден
+
 
     while game:
         if state == 1:
@@ -63,11 +54,24 @@ def main():
                     if e.button == 1:
                         if e.pos[0] in range(400, 1000):
                             if e.pos[1] in range(200, 300):
+                                phr = level.readline().split()  # считываем уровень
+                                for i in range(0, len(phr), 3):
+                                    plats.append(Platform(int(phr[i]), int(phr[i + 1]), bool(phr[i + 2])))
+                                phr = level.readline().split()
+                                for i in range(0, len(phr), 2):
+                                    cns.append(Coin(int(phr[i]), int(phr[i + 1])))
+                                phr = level.readline().split()
+                                for i in range(0, len(phr), 2):
+                                    enm.append(Enemy(int(phr[i]), int(phr[i + 1])))
+                                phr = level.readline().split()
+                                for i in range(0, len(phr), 2):
+                                    bs.append((int(phr[i]), int(phr[i + 1])))
+                                world = World([(0, 0)], plats, cns, enm, bs)  # конец считывания уровня
                                 state = 2
                             elif e.pos[1] in range(350, 450):
                                 state = 4
                             elif e.pos[1] in range(500, 600):
-                                state = 5
+                                state = 7
                         pygame.draw.circle(screen, pygame.Color('Red'), e.pos, 20)
                         pygame.display.update()
             pygame.display.flip()
@@ -119,7 +123,21 @@ def main():
                     if e.button == 1:
                         if e.pos[0] in range(400, 1000):
                             if e.pos[1] in range(200, 300):
+                                phr = level.readline().split()  # считываем уровень
+                                for i in range(0, len(phr), 3):
+                                    plats.append(Platform(int(phr[i]), int(phr[i + 1]), bool(phr[i + 2])))
+                                phr = level.readline().split()
+                                for i in range(0, len(phr), 2):
+                                    cns.append(Coin(int(phr[i]), int(phr[i + 1])))
+                                phr = level.readline().split()
+                                for i in range(0, len(phr), 2):
+                                    enm.append(Enemy(int(phr[i]), int(phr[i + 1])))
+                                phr = level.readline().split()
+                                for i in range(0, len(phr), 2):
+                                    bs.append((int(phr[i]), int(phr[i + 1])))
+                                world = World([(0, 0)], plats, cns, enm, bs)  # конец считывания уровня
                                 state = 2
+                                break
                             elif e.pos[1] in range(350, 450):
                                 state = 1
                         pygame.draw.circle(screen, pygame.Color('Red'), e.pos, 20)
@@ -177,6 +195,37 @@ def main():
                     break
             pygame.display.flip()
             clock.tick(60)
+        elif state == 7:
+            # TODO: вставить кат-сцены
+            pass  # TODO: перезаписать сохранение и лок.переменные
+            f2 = pygame.font.SysFont('serif', 48)
+            txt1 = f2.render('Меню', 1, (255, 255, 255))
+            txt2 = f2.render('Следующий уровень', 1, (255, 255, 255))
+            screen.fill(pygame.Color('Pink'))
+            pygame.draw.rect(screen, pygame.Color('Black'), (100, 700, 500, 100))
+            pygame.draw.rect(screen, pygame.Color('Black'), (800, 700, 500, 100))
+            screen.blit(txt1, (275, 725, 400, 100))
+            screen.blit(txt2, (825, 725, 400, 100))
+            for e in pygame.event.get():
+                if e.type == QUIT:
+                    game = False
+                    break
+                if e.type == KEYDOWN:
+                    if e.key == K_ESCAPE:
+                        state = 1
+                        break
+                if e.type == pygame.MOUSEBUTTONDOWN:
+                    if e.button == 1:
+                        if e.pos[1] in range(600, 700):
+                            if e.pos[0] in range(200, 600):
+                                state = 1
+                            if e.pos[0] in range(800, 1200):
+                                pass  # TODO:переход на след.уровень
+                        pygame.draw.circle(screen, pygame.Color('Red'), e.pos, 20)
+                        pygame.display.update()
+            pygame.display.flip()
+            clock.tick(60)
+
 
 
 if __name__ == "__main__":
