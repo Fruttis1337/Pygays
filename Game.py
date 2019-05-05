@@ -4,6 +4,7 @@ from GameWorld import World
 from Coin import Coin
 from Platform import Platform
 from Enemy import Enemy, Boss
+from MainHero import Hero
 
 WIN_WIDTH = 1400
 WIN_HEIGHT = 900
@@ -55,6 +56,8 @@ def main():
                         if e.pos[0] in range(400, 1000):
                             if e.pos[1] in range(200, 300):
                                 phr = level.readline().split()  # считываем уровень
+                                hero = Hero(int(phr[0]), int(phr[1]))
+                                phr = level.readline().split()
                                 for i in range(0, len(phr), 3):
                                     plats.append(Platform(int(phr[i]), int(phr[i + 1]), bool(phr[i + 2])))
                                 phr = level.readline().split()
@@ -66,12 +69,12 @@ def main():
                                 phr = level.readline().split()
                                 for i in range(0, len(phr), 2):
                                     bs.append((int(phr[i]), int(phr[i + 1])))
-                                world = World([(0, 0)], plats, cns, enm, bs)  # конец считывания уровня
+                                world = World([hero], plats, cns, enm, bs)  # конец считывания уровня
                                 state = 2
                             elif e.pos[1] in range(350, 450):
                                 state = 4
                             elif e.pos[1] in range(500, 600):
-                                state = 7
+                                state = 5
                         pygame.draw.circle(screen, pygame.Color('Red'), e.pos, 20)
                         pygame.display.update()
             pygame.display.flip()
@@ -95,11 +98,15 @@ def main():
                 i(screen)
             for i in world.get_boss():
                 i(screen)
+            world.mainhero[0](screen)
+            # TODO:взаимодействия с кнопками и игроком
+
+            world.check_coins(world.mainhero[0].get_coords())
+            world.check_platform(world.mainhero[0].get_coords())
+            world.check_enemies(world.mainhero[0].get_coords())
+            world.check_enemies(world.mainhero[0].get_coords())
             pygame.display.flip()
             clock.tick(60)
-
-            # TODO:взаимодействия с кнопками и игроком
-            # TODO:пройтись по world и поменять значения
         elif state == 3:
             screen.fill(pygame.Color('Yellow'))
             f2 = pygame.font.SysFont('serif', 48)
@@ -124,6 +131,8 @@ def main():
                         if e.pos[0] in range(400, 1000):
                             if e.pos[1] in range(200, 300):
                                 phr = level.readline().split()  # считываем уровень
+                                hero = Hero(int(phr[0]), int(phr[1]))
+                                phr = level.readline().split()
                                 for i in range(0, len(phr), 3):
                                     plats.append(Platform(int(phr[i]), int(phr[i + 1]), bool(phr[i + 2])))
                                 phr = level.readline().split()
@@ -135,7 +144,7 @@ def main():
                                 phr = level.readline().split()
                                 for i in range(0, len(phr), 2):
                                     bs.append((int(phr[i]), int(phr[i + 1])))
-                                world = World([(0, 0)], plats, cns, enm, bs)  # конец считывания уровня
+                                world = World([hero], plats, cns, enm, bs)  # конец считывания уровня
                                 state = 2
                                 break
                             elif e.pos[1] in range(350, 450):
@@ -225,7 +234,6 @@ def main():
                         pygame.display.update()
             pygame.display.flip()
             clock.tick(60)
-
 
 
 if __name__ == "__main__":

@@ -7,6 +7,8 @@ class World:
         self.boss = boss
 
     def check_mainhero(self):
+        pass
+
     def check_platform(self, coords):
         for i in self.platforms:
             if i.get_coords == coords:
@@ -18,7 +20,7 @@ class World:
     def check_coins(self, coords):
         for i in self.coins:
             i.take(coords)
-            #mainhero.coins += 1
+            self.mainhero[0].coins += 1
         filter(lambda x: not x.is_taken, self.platforms)
 
     def check_enemies(self, coords):

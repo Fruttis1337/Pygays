@@ -17,8 +17,8 @@ class Hero(sprite.Sprite):
     def __init__(self, x, y):
         sprite.Sprite.__init__(self)
         self.xvel = 0  # скорость перемещения. 0 - стоять на месте
-        self.startX = x  # Начальная позиция Х, пригодится когда будем переигрывать уровень
-        self.startY = y
+        self.x = x  # Начальная позиция Х, пригодится когда будем переигрывать уровень
+        self.y = y
         self.yvel = 0  # скорость вертикального перемещения
         self.onGround = False  # На земле ли я?
         self.isFly = False
@@ -26,6 +26,11 @@ class Hero(sprite.Sprite):
         self.image.fill(Color(COLOR))
         self.rect = Rect(x, y, WIDTH, HEIGHT)  # прямоугольный объект
         self.image.set_colorkey(Color(COLOR))  # делаем фон прозрачным
+        self.hp = 3
+        self.money = 0
+
+    def get_coords(self):
+        return self.x, self.y
 
     def update(self, left, right, up, running, platforms):
 
@@ -77,18 +82,21 @@ class Hero(sprite.Sprite):
         for p in platforms:
             if sprite.collide_rect(self, p):  # если есть пересечение платформы с игроком
                 if xvel > 0:  # если движется вправо
-                    self.rect.right = p.rect.left  # то не движется вправо
+                    self.rect.right = p.x # то не движется вправо
                     self.xvel = 0
 
                 if xvel < 0:  # если движется влево
-                    self.rect.left = p.rect.right  # то не движется влево
+                    self.rect.left = p.x + p.width  # то не движется влево
                     self.xvel = 0
 
                 if yvel > 0:  # если падает вниз
-                    self.rect.bottom = p.rect.top  # то не падает вниз
+                    self.rect.bottom = p.y  # то не падает вниз
                     self.onGround = True  # и становится на что-то твердое
                     self.yvel = 0  # и энергия падения пропадает
 
                 if yvel < 0:  # если движется вверх
-                    self.rect.top = p.rect.bottom  # то не движется вверх
+                    self.rect.top = p.y + p.height  # то не движется вверх
                     self.yvel = 0  # и энергия прыжка пропадает
+
+    def __call__(self, *args, **kwargs):
+        pygame.draw.rect(args[0], pygame.Color('Green'), (self.x * 50 + 15, self.y * 50, 20, 50))
