@@ -20,7 +20,7 @@ class World:
     def check_coins(self, coords):
         for i in self.coins:
             i.take(coords)
-            self.mainhero[0].coins += 1
+            self.mainhero[0].money += 1
         filter(lambda x: not x.is_taken, self.platforms)
 
     def check_enemies(self, coords):
