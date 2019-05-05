@@ -23,7 +23,7 @@ def main():
     cns = []
     enm = []
     bs = []
-    state = 1  # 1 - меню, 2 - игра, 3 - смерть, 4 - уровни, 5 - титры
+    state = 1  # 1 - меню, 2 - игра, 3 - смерть, 4 - уровни, 5 - титры, 6 - пауза
     phr = level.readline().split()  # считываем уровень
     for i in range(0, len(phr), 3):
         plats.append(Platform(int(phr[i]), int(phr[i + 1]), bool(phr[i + 2])))
@@ -38,8 +38,7 @@ def main():
         bs.append((int(phr[i]), int(phr[i + 1])))
     world = World([(0, 0)], plats, cns, enm, bs)  # конец считывания уровня
 
-
-    while game:  # TODO:глобальный цикл на проверку стейта вставить
+    while game:
         if state == 1:
             screen.fill(pygame.Color('Green'))
             f2 = pygame.font.SysFont('serif', 48)
@@ -82,10 +81,8 @@ def main():
                     break
                 if e.type == KEYDOWN:
                     if e.key == pygame.K_ESCAPE:
-                        state = 1
-                        pass
-                        # game = False TODO: реализовать паузу
-                        # break
+                        state = 6
+                        break
             for i in world.get_platforms():
                 i(screen)
             for i in world.get_coins():
@@ -155,6 +152,29 @@ def main():
                         state = 1
                         break
             pass  # TODO:написать титры
+            pygame.display.flip()
+            clock.tick(60)
+        elif state == 6:
+            f2 = pygame.font.SysFont('serif', 48)
+            txt = f2.render('ПАУЗА', 1, (0, 0, 0))
+            txt1 = f2.render('Меню', 1, (255, 255, 255))
+            pygame.draw.rect(screen, pygame.Color('Black'), (400, 350, 600, 100))
+            screen.blit(txt1, (625, 375, 600, 100))
+            screen.blit(txt, (625, 225, 600, 100))
+            for e in pygame.event.get():
+                if e.type == QUIT:
+                    game = False
+                    break
+                if e.type == pygame.MOUSEBUTTONDOWN:
+                    if e.button == 1:
+                        if e.pos[0] in range(400, 1000):
+                            if e.pos[1] in range(350, 450):
+                                state = 1
+                        pygame.draw.circle(screen, pygame.Color('Red'), e.pos, 20)
+                        pygame.display.update()
+                if e.type == KEYDOWN:
+                    state = 2
+                    break
             pygame.display.flip()
             clock.tick(60)
 
